@@ -1,8 +1,7 @@
-# Your Fritzbox will generate something like this in his "wg_config.conf" file
+# Your Fritz!Box will generate something like this 
 [Interface]
 PrivateKey = xxx
-# Change "Address" to something that's not already taken in your subnet, it's an virtual ip
-Address = 192.168.220.220/24
+Address = 192.168.220.220/24 # Change the "Address" to something that's not already taken in your subnet, it's an virtual ip
 DNS = 8.8.8.8
 DNS = 192.168.178.1
 DNS = fritz.box
@@ -10,11 +9,12 @@ DNS = fritz.box
 [Peer]
 PublicKey = xxx
 PresharedKey = xxx
-AllowedIPs = 192.168.178.0/24
-Endpoint = thisisanexample.myfritz.net:59984
+AllowedIPs = 192.168.178.0/24 # Your local network
+Endpoint = thisisanexample.myfritz.net:59984 # Mostly your myfritz or dyndns Name
 PersistentKeepalive = 25
 
-# Just copy & add the following blocks to your wg0.conf file 
+# The following settings are from an unknown blog or git repository which i can't find anymore, please let me know if you know the source
+# Copy the following lines to your wg0.conf file
 
 # IP forwarding
 PreUp = sysctl -w net.ipv4.ip_forward=1
