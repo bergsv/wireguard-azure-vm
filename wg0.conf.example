@@ -1,7 +1,8 @@
 # Your Fritzbox will generate something like this in his "wg_config.conf" file
 [Interface]
 PrivateKey = xxx
-Address = 192.168.220.1/24
+# Change "Address" to something that's not already taken in your subnet, it's an virtual ip
+Address = 192.168.220.220/24
 DNS = 8.8.8.8
 DNS = 192.168.178.1
 DNS = fritz.box
