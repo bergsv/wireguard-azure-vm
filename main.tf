@@ -24,7 +24,7 @@ resource "azurerm_subnet" "subnet_homelab" {
 
 # Define a static public IP for WireGuard
 resource "azurerm_public_ip" "public_ip_wireguard" {
-  name                = "pip-linux-wg01"
+  name                = "pip-wireguard"
   resource_group_name = azurerm_resource_group.resource_group_homelab.name
   location            = azurerm_resource_group.resource_group_homelab.location
   allocation_method   = "Static"
@@ -33,7 +33,7 @@ resource "azurerm_public_ip" "public_ip_wireguard" {
 
 # Network Security Group for WireGuard VM
 resource "azurerm_network_security_group" "nsg_wireguard" {
-  name                = "nsg-linux-wg01"
+  name                = "nsg-wireguard"
   resource_group_name = azurerm_resource_group.resource_group_homelab.name
   location            = azurerm_resource_group.resource_group_homelab.location
 
@@ -69,7 +69,7 @@ resource "azurerm_network_security_group" "nsg_wireguard" {
 
 # Network Interface for WireGuard with Security Group association
 resource "azurerm_network_interface" "nic_wireguard" {
-  name                  = "nic-linux-wg01"
+  name                  = "nic-wireguard"
   resource_group_name   = azurerm_resource_group.resource_group_homelab.name
   location              = azurerm_resource_group.resource_group_homelab.location
   ip_forwarding_enabled = true
@@ -90,7 +90,7 @@ resource "azurerm_network_interface_security_group_association" "nsg_association
 
 # Create a Linux VM for WireGuard
 resource "azurerm_linux_virtual_machine" "vm_wireguard" {
-  name                            = "vm-linux-wg01"
+  name                            = "vm-wireguard"
   resource_group_name             = azurerm_resource_group.resource_group_homelab.name
   location                        = azurerm_resource_group.resource_group_homelab.location
   size                            = "Standard_B2ts_v2"
