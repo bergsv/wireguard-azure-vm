@@ -4,7 +4,7 @@ provider "azurerm" {
 
 resource "azurerm_resource_group" "resource_group_homelab" {
   name     = "rg-homelab"
-  location = "germanywestcentral"
+  location = var.location
 }
 
 resource "azurerm_virtual_network" "virtual_network" {
@@ -37,8 +37,7 @@ resource "azurerm_network_security_group" "nsg_wireguard" {
   resource_group_name = azurerm_resource_group.resource_group_homelab.name
   location            = azurerm_resource_group.resource_group_homelab.location
 
-/* PLEASE DELETE THE SSH RULE AFTER SET UP */
-
+  # SSH is only needed for the initial setup. Delete this rule afterwards.
   security_rule {
     name                       = "Allow_SSH"
     priority                   = 1001
@@ -47,19 +46,16 @@ resource "azurerm_network_security_group" "nsg_wireguard" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    # Please change source address to your own IP address
-    source_address_prefix      = "*"
+    source_address_prefix      = var.ssh_source_address
     destination_address_prefix = "*"
   }
-
-/* DELETE THE SECURITY RULE BLOCK AFTER SET UP */
 
   security_rule {
     name                       = "Allow_WireGuard"
     priority                   = 1002
     direction                  = "Inbound"
     access                     = "Allow"
-    protocol                   = "*"
+    protocol                   = "Udp"
     source_port_range          = "*"
     destination_port_range     = "51820"
     source_address_prefix      = "*"
@@ -94,7 +90,7 @@ resource "azurerm_linux_virtual_machine" "vm_wireguard" {
   resource_group_name             = azurerm_resource_group.resource_group_homelab.name
   location                        = azurerm_resource_group.resource_group_homelab.location
   size                            = "Standard_B2ts_v2"
-  admin_username                  = "adminuser"
+  admin_username                  = var.admin_username
   admin_password                  = var.admin_password
   disable_password_authentication = false
   network_interface_ids           = [azurerm_network_interface.nic_wireguard.id]

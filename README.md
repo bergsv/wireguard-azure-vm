@@ -1,7 +1,7 @@
 # WireGuard Azure VM
 
 This repository contains configurations and scripts for deploying WireGuard VPN on Azure Virtual Machines using HCL (HashiCorp Configuration Language).
-The tutorial could be found here 
+The tutorial can be found here: [Establishing a VPN tunnel between Microsoft Azure and Fritz!Box with WireGuard](https://svenbergendahl.com/establishing-a-vpn-tunnel-between-microsoft-azure-and-fritzbox-with-wireguard/)
 
 ## Features
 
@@ -23,25 +23,34 @@ The tutorial could be found here
    cd wireguard-azure-vm
    ```
 
-2. Authenticate with Azure CLI:
+2. Authenticate with Azure CLI and select the subscription (the azurerm 4.x provider needs the subscription ID):
    ```bash
    az login
+   export ARM_SUBSCRIPTION_ID=$(az account show --query id -o tsv)
    ```
 
-3. Initialize Terraform:
+3. Create a `terraform.tfvars` file with your own values. It is ignored by git:
+   ```hcl
+   admin_password     = "<your password>"
+   ssh_source_address = "<your public IP>/32"
+   ```
+
+4. Initialize Terraform:
    ```bash
    terraform init
    ```
 
-4. Plan the deployment:
+5. Plan the deployment:
    ```bash
    terraform plan
    ```
 
-5. Apply the deployment:
+6. Apply the deployment:
    ```bash
    terraform apply
    ```
+
+7. Copy `wg0.conf.example` to `/etc/wireguard/wg0.conf` on the VM and replace the keys, addresses and endpoint with the values from your Fritz!Box. Delete the `Allow_SSH` rule once the tunnel works.
 
 ## Configuration
 
@@ -53,4 +62,4 @@ Contributions are welcome! Please open an issue or submit a pull request if you 
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
